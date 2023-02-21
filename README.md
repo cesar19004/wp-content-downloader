@@ -33,4 +33,4 @@ to discuss what you would like to change.
 
 ## License
 
-[MIT](https://choosealicense.com/licenses/mit/)
+[MIT](LICENCE.txt)
