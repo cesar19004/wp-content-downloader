@@ -1,0 +1,6 @@
+venv/*
+*/wp-content
+__*
+
+*no-track.py
+last_fetched_urls.txt
