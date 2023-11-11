@@ -23,7 +23,7 @@ if len(sys.argv) < 2:
     exit()
     
 site = sys.argv[1]
-if site.split("/") not in ["http", "https"]:
+if site.split("://")[0] not in ["http", "https"]:
     site = "http://"+ site
 site = os.path.join(site,'wp-content','uploads/')
 content_list = []
