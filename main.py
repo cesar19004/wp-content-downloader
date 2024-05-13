@@ -7,10 +7,10 @@ from multiprocessing.pool import ThreadPool
 
 #CONFIG
 thumbnails_regex_list = [
-    "-\d{1,4}x\d{1,4}$", #match: -421x421
-    "-e\d{13}$", #match: -e1676678024195
-    "-scaled$", 
-    "-modified", 
+    r'-\d{1,4}x\d{1,4}$', #match: -421x421
+    r'-e\d{13}$', #match: -e1676678024195
+    r'-scaled$', 
+    r'-modified', 
 ]
 #END CONFIG
 
@@ -38,13 +38,13 @@ def get_content_urls():
     
     #Get directories by year
     response = requests.get(site)
-    years = re.findall('alt="\[DIR\]"> <a href="(\d{2,4})\/"', str(response.content.decode()))
+    years = re.findall(r'alt="\[DIR\]"> <a href="(\d{2,4})\/"', str(response.content.decode()))
     
     #Set directories to examinate
     for year in years:
         response = requests.get(site+"/"+year)
         #Get directories by month
-        months=re.findall('alt="\[DIR\]"> <a href="(\d{2})\/"', str(response.content.decode()))
+        months=re.findall(r'alt="\[DIR\]"> <a href="(\d{2})\/"', str(response.content.decode()))
         for month in months:
             dates.append(year+'/'+month)
     
@@ -56,7 +56,7 @@ def get_content_urls():
         #Get files ordered by size desc
         response = requests.get(site+date+"?C=S;O=D")
         temp_files=[]
-        for file in re.findall('alt="\[(?!PARENTDIR).*\]"> <a href="(.+)"', str(response.content.decode())):
+        for file in re.findall(r'alt="\[(?!PARENTDIR).*\]"> <a href="(.+)"', str(response.content.decode())):
             temp_files.append(os.path.join(site,date,file))
             
         print(" - "+str(len(temp_files))+"  files found")
@@ -141,7 +141,7 @@ def download(url):
 
 def start():
     # Run 10 multiple threads. Each call will take the next element in urls list
-    results = ThreadPool(10).imap_unordered(download, content_list)
+    results = ThreadPool(5).imap_unordered(download, content_list)
     for r in results:
         print(r)
 
